@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{dd1b4be1-8d42-4d53-933d-a7c72a98fca2}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\common.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\engine.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\graphic.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\headers.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\math.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\memory.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_gl.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_gles.c" />
+  </ItemGroup>
+</Project>
