@@ -1,13 +1,13 @@
 #pragma once
-#ifndef SAMBAL_THREAD_H
-#define SAMBAL_THREAD_H
+#ifndef COBEK_THREAD_H
+#define COBEK_THREAD_H
 
 #include "common.h"
 #include "portable_thread\thread.h"
 
-namespace sambal {
+namespace cobek {
 	namespace Thread {
 		
 	}
 }
-#endif // !SAMBAL_THREAD_H
+#endif // !COBEK_THREAD_H

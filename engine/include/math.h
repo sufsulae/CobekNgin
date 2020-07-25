@@ -1,11 +1,11 @@
 #pragma once
-#ifndef SAMBAL_MATH_H
-#define SAMBAL_MATH_H
+#ifndef COBEK_MATH_H
+#define COBEK_MATH_H
 #include "common.h"
 
-namespace sambal {
+namespace cobek {
 	namespace Math {
 		
 	}
 }
-#endif // !SAMBAL_MATH_H
+#endif // !COBEK_MATH_H

@@ -1,13 +1,13 @@
 #pragma once
-#ifndef SAMBAL_3RDPARTY_MONO_H
-#define SAMBAL_3RDPARTY_MONO_H
+#ifndef COBEK_3RDPARTY_MONO_H
+#define COBEK_3RDPARTY_MONO_H
 #include "../../headers.h"
-#if defined(SAMBAL_ENABLE_3RDPARTY_MONO)
+#if defined(COBEK_ENABLE_3RDPARTY_MONO)
 #include "mono\jit\jit.h"
 #include "mono\metadata\metadata.h"
 #include "mono\metadata\assembly.h"
 #pragma comment (lib, "mono-2.0-sgen.lib")
-namespace sambal {
+namespace cobek {
 	namespace Plugin {
 		namespace Mono {
 			class MonoAsm {

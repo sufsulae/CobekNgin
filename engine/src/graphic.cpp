@@ -1,5 +1,5 @@
 #include "include\graphic.h"
-namespace sambal {
+namespace cobek {
 	namespace Graphic {
 		
 	}

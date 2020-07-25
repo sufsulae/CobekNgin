@@ -3,7 +3,7 @@
 #endif
 #include "include\engine.h"
 
-using namespace sambal::Plugin::Mono;
+using namespace cobek::Plugin::Mono;
 
 //int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) {
 //	MonoMgr::CreateDomain("Test");

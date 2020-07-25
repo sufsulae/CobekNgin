@@ -1,6 +1,6 @@
-#if defined(SAMBAL_ENABLE_3RDPARTY_MONO)
+#if defined(COBEK_ENABLE_3RDPARTY_MONO)
 #include "include\plugin\mono\mono.h"
-namespace sambal {
+namespace cobek {
 	namespace Plugin {
 		namespace Mono {
 			//---MonoAsm---

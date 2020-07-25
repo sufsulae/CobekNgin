@@ -1,10 +1,10 @@
 #pragma once
-#ifndef SAMBAL_MEMORY_H
-#define SAMBAL_MEMORY_H
+#ifndef COBEK_MEMORY_H
+#define COBEK_MEMORY_H
 
 #include "headers.h"
 
-namespace sambal {
+namespace cobek {
 	namespace Memory {
 		template<typename T> struct ArrayPtr {
 			T* ptr = nullptr;

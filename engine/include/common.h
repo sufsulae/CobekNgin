@@ -1,14 +1,14 @@
 #pragma once
-#ifndef SAMBAL_COMMON_H
-#define SAMBAL_COMMON_H
+#ifndef COBEK_COMMON_H
+#define COBEK_COMMON_H
 
-#ifndef SAMBAL_HEADERS_H
+#ifndef COBEK_HEADERS_H
 #include "headers.h"
 #endif
 
 #include "Eigen\Eigen"
 
-namespace sambal {
+namespace cobek {
 	namespace __internal__ {
 		template<typename IDType> static IDType __baseObjectMaxId = 0;
 		template<typename IDType> static std::vector<IDType> __baseObjectDeletedId = std::vector<IDType>();

@@ -1,13 +1,13 @@
 #pragma once
-#ifndef SAMBAL_GRAPHIC_H
-#define SAMBAL_GRAPHIC_H
+#ifndef COBEK_GRAPHIC_H
+#define COBEK_GRAPHIC_H
 #include "common.h"
 
-#ifndef SAMBAL_MEMORY_H
+#ifndef COBEK_MEMORY_H
 #include "memory.h"
 #endif
 
-#define SAMBAL_IGRAPHIC(className) \
+#define COBEK_IGRAPHIC(className) \
 	class className : public IGraphic {\
 	protected:\
 		bool checkShaderProgram(void* shaderHandle, uint kind) override;\
@@ -49,9 +49,9 @@
 		int EndRender() override;\
 	};\
 
-namespace sambal {
+namespace cobek {
 	namespace Graphic {
-		using namespace sambal::Memory;
+		using namespace cobek::Memory;
 		namespace __internal__ {
 			struct _MeshHandler {
 				void* vbo;
@@ -392,29 +392,29 @@ namespace sambal {
 		};
 
 		namespace __internal__ {
-#ifdef SAMBAL_INCLUDE_GRAPHIC_GL
+#ifdef COBEK_INCLUDE_GRAPHIC_GL
 			//Generated Script for OpenGL Graphic
-			SAMBAL_IGRAPHIC(IGraphic_OGL);
+			COBEK_IGRAPHIC(IGraphic_OGL);
 #endif
-#ifdef SAMBAL_INCLUDE_GRAPHIC_GLES
+#ifdef COBEK_INCLUDE_GRAPHIC_GLES
 			//Generated Script for OpenGL ES Graphic
-			SAMBAL_IGRAPHIC(IGraphic_GLES);
+			COBEK_IGRAPHIC(IGraphic_GLES);
 #endif
-#ifdef SAMBAL_INCLUDE_GRAPHIC_VULKAN
+#ifdef COBEK_INCLUDE_GRAPHIC_VULKAN
 			//Generated Script for Vulkan Graphic
-			SAMBAL_IGRAPHIC(IGraphic_VULKAN);
+			COBEK_IGRAPHIC(IGraphic_VULKAN);
 #endif
-#ifdef SAMBAL_INCLUDE_GRAPHIC_DX9
+#ifdef COBEK_INCLUDE_GRAPHIC_DX9
 			//Generated Script for DirectX 9 Graphic
-			SAMBAL_IGRAPHIC(IGraphic_DX9);
+			COBEK_IGRAPHIC(IGraphic_DX9);
 #endif
-#ifdef SAMBAL_INCLUDE_GRAPHIC_DX11
+#ifdef COBEK_INCLUDE_GRAPHIC_DX11
 			//Generated Script for DirectX 11 Graphic
-			SAMBAL_IGRAPHIC(IGraphic_DX11);
+			COBEK_IGRAPHIC(IGraphic_DX11);
 #endif
-#ifdef SAMBAL_INCLUDE_GRAPHIC_DX12
+#ifdef COBEK_INCLUDE_GRAPHIC_DX12
 			//Generated Script for DirectX 12 Graphic
-			SAMBAL_IGRAPHIC(IGraphic_DX12);
+			COBEK_IGRAPHIC(IGraphic_DX12);
 #endif
 		}
 
@@ -432,6 +432,6 @@ namespace sambal {
 	}
 }
 
-#undef SAMBAL_IGRAPHIC
+#undef COBEK_IGRAPHIC
 
 #endif
