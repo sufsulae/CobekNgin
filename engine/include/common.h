@@ -2,7 +2,12 @@
 #ifndef SAMBAL_COMMON_H
 #define SAMBAL_COMMON_H
 
+#ifndef SAMBAL_HEADERS_H
 #include "headers.h"
+#endif
+
+#include "Eigen\Eigen"
+
 namespace sambal {
 	namespace __internal__ {
 		template<typename IDType> static IDType __baseObjectMaxId = 0;

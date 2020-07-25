@@ -163,6 +163,4 @@ namespace sambal {
 		};
 	}
 }
-
-
 #endif

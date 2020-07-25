@@ -92,16 +92,6 @@
 #include <unordered_map>
 #include <map>
 
-//Include 3rdParty
-#include "portable_thread\thread.h"
-#include "Eigen\Eigen"
-#if defined(SAMBAL_3RDPARTY_MONO)
-#include "mono\jit\jit.h"
-#include "mono\metadata\metadata.h"
-#include "mono\metadata\assembly.h"
-#pragma comment (lib, "libmono-static-sgen.lib")
-#endif
-
 namespace sambal {
 #define byte unsigned char
 #define ulong unsigned long

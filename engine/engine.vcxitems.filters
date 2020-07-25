@@ -7,9 +7,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\memory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\graphic.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\math.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\thread.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\plugin\mono\mono.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\fileUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_gl.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_gles.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\graphic.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\plugin\mono\mono.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\engine.cpp" />
   </ItemGroup>
 </Project>

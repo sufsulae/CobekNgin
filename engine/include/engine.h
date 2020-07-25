@@ -6,8 +6,9 @@
 #include "math.h"
 #include "memory.h"
 #include "graphic.h"
-namespace sambal {
 
-}
+#if defined(SAMBAL_ENABLE_3RDPARTY_MONO)
+#include "plugin\mono\mono.h"
+#endif
 
 #endif
