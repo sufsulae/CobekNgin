@@ -28,7 +28,10 @@ namespace cobek {
 				}
 
 				int LoadAsm(const char* asmFile);
+				MonoAssembly* GetAsm();
 				int UnloadAsm();
+
+				MonoImage* GetImage();
 			};
 			class MonoMgr final {
 			private:
