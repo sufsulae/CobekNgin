@@ -49,24 +49,21 @@ namespace cobek {
 			return fs::path(m_path).has_relative_path();
 		}
 
-		std::wstring DirectoryInfo::getPath() {
-			return m_path.c_str();
+		std::string DirectoryInfo::getPath() {
+			return wchar2mbchar(m_path.c_str()); 
 		}
-		std::string DirectoryInfo::getPathAscii() {
-			return wchar2mbchar(m_path.c_str());
+		std::wstring DirectoryInfo::getPathUni() {
+			return m_path.c_str();
 		}
 		std::string DirectoryInfo::getName() {
 			return fs::path(m_path).filename().c_str();
 		}
 
-		int DirectoryInfo::getParent(DirectoryInfo* parentDir) {
+		DirectoryInfo DirectoryInfo::getParent() {
 			auto path = fs::path(m_path);
 			if (path.has_parent_path())
-			{
-				*parentDir = DirectoryInfo(path.parent_path().c_str());
-				return true;
-			}
-			return false;
+				return DirectoryInfo(path.parent_path().c_str());;
+			return *this;
 		}
 		std::vector<FileInfo> DirectoryInfo::getFiles() {
 			std::vector<FileInfo> res;

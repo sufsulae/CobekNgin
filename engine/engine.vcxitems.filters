@@ -11,6 +11,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\plugin\mono\mono.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\fileUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\inlineUtil.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\debugUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_gl.c" />

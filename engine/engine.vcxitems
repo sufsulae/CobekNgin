@@ -22,6 +22,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\memory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\plugin\mono\mono.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\thread.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\debugUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\fileUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\inlineUtil.h" />
   </ItemGroup>

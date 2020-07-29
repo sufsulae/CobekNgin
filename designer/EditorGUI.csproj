@@ -4,9 +4,11 @@
     <TargetFramework>net471</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <AssemblyName>EditorGUI</AssemblyName>
     <RootNamespace>editor</RootNamespace>
+    <Authors>Yusuf Sulaeman</Authors>
+    <Company>Cobek</Company>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.11" />

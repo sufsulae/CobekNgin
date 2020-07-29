@@ -3,44 +3,72 @@
 #define COBEK_3RDPARTY_MONO_H
 #include "../../headers.h"
 #if defined(COBEK_ENABLE_3RDPARTY_MONO)
-#include "mono\jit\jit.h"
-#include "mono\metadata\metadata.h"
-#include "mono\metadata\assembly.h"
 #pragma comment (lib, "mono-2.0-sgen.lib")
 namespace cobek {
 	namespace Plugin {
 		namespace Mono {
-			class MonoAsm {
-				MonoDomain* m_dom = nullptr;
-				MonoAssembly* m_asm = nullptr ;
+			class MonoImage {
+			private:
+				void* m_img = nullptr;
+				friend class MonoManager;
+				friend class MonoAssembly;
 			public:
-				MonoAsm(MonoDomain* domain) {
+				void* get_Internal() { return m_img; }
+				const char* get_Name();
+				const char* get_Filename();
+				const char* get_Guid();
+				bool isDynamic();
+			};
+
+			class MonoDomain {
+			private:
+				const char* m_name = nullptr;
+				void* m_dom = nullptr;
+				friend class MonoManager;
+			public:
+				void* get_Internal() { return m_dom; }
+			};
+
+			class MonoAssembly {
+			private:
+				MonoDomain* m_dom;
+				MonoImage m_image;
+				void* m_asm = nullptr;
+				void* m_asmName = nullptr;
+			public:
+				MonoAssembly(MonoDomain* domain) {
 					m_dom = domain;
 					m_asm = nullptr;
 				}
-				MonoAsm(MonoDomain* domain, const char* asmFile) {
+				MonoAssembly(MonoDomain* domain, const char* asmFile) {
 					m_dom = domain;
-					LoadAsm(asmFile);
+					OpenAsm(asmFile);
 				}
-				~MonoAsm() {
+				~MonoAssembly() {
 					m_dom = nullptr;
 					m_asm = nullptr;
 				}
 
-				int LoadAsm(const char* asmFile);
-				MonoAssembly* GetAsm();
-				int UnloadAsm();
+				bool isLoaded() { return m_asm != nullptr; }
 
-				MonoImage* GetImage();
+				void* get_Internal() { return m_dom; }
+				MonoImage* get_Image() { return &m_image; }
+				const char* get_Name();
+				const char* get_Culture();
+
+				int OpenAsm(const char* asmFile);
+				int CloseAsm();
 			};
-			class MonoMgr final {
+
+			class MonoManager final {
 			private:
-				static std::unordered_map<std::string, MonoDomain*> m_domainList;
+				static std::vector<MonoDomain> m_domainList;
 			public:
 				static void SetAssemblyPath(const char* path);
-				static MonoDomain* CreateDomain(const char* domainName);
+				static void SetDirectory(const char* asmPath, const char* configPath);
+				static MonoDomain* CreateDomain(const char* domainName, const char* assemblyVersion = nullptr);
 				static MonoDomain* GetDomain(const char* domainName);
-				static int CloseDomain(const char* domainName);
+				static int CloseDomain(MonoDomain* domain);
 			};
 		}
 	}
