@@ -7,6 +7,22 @@
 namespace cobek {
 	namespace Plugin {
 		namespace Mono {
+			class MonoClass {
+
+			};
+
+			class MonoMethod {
+
+			};
+
+			class MonoProperty {
+
+			};
+
+			class MonoField {
+
+			};
+
 			class MonoImage {
 			private:
 				void* m_img = nullptr;

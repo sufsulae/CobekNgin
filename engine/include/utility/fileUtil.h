@@ -35,13 +35,13 @@ namespace cobek {
 			bool hasRoot();
 			bool hasRelativePath();
 
-			std::string getPath();
-			std::wstring getPathUni();
-			std::string getName();
+			std::string get_Path();
+			std::wstring get_PathUni();
+			std::string get_Name();
 
-			std::vector<FileInfo> getFiles();
-			std::vector<DirectoryInfo> getDirectories();
-			DirectoryInfo getParent();
+			std::vector<FileInfo> get_Files();
+			std::vector<DirectoryInfo> get_Directories();
+			DirectoryInfo get_Parent();
 		};
 
 		struct FileInfo {
@@ -51,10 +51,10 @@ namespace cobek {
 			FileInfo(const char* filePath);
 			FileInfo(const wchar_t* filePath);
 			bool isExist();
-			DirectoryInfo getDirectory();
-			std::string getName();
-			std::string getExtention();
-			std::string getFullName();
+			DirectoryInfo get_Directory();
+			std::string get_Name();
+			std::string get_Extention();
+			std::string get_FullName();
 		};
 
 		class Directory final {

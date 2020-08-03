@@ -22,9 +22,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\memory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\plugin\mono\mono.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\thread.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\time.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\debugUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\fileUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\inlineUtil.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_gl.c" />
@@ -32,6 +34,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\engine.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\graphic.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\plugin\mono\mono.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\time.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\utility\fileUtil.cpp" />
   </ItemGroup>
 </Project>

@@ -1,9 +1,10 @@
 ﻿using Avalonia;
+using System;
 
 namespace designer
 {
     sealed class MainApp : Application {
-
+        
     }
 
     public static class App
@@ -15,6 +16,11 @@ namespace designer
             m_builder = AppBuilder.Configure<MainApp>().UsePlatformDetect();
             m_builder.StartWithClassicDesktopLifetime(args);
             isInitialized = true;
+        }
+
+        [STAThread]
+        private static int Main(string[] args) {
+            return 0;
         }
     }
 }

@@ -49,23 +49,23 @@ namespace cobek {
 			return fs::path(m_path).has_relative_path();
 		}
 
-		std::string DirectoryInfo::getPath() {
+		std::string DirectoryInfo::get_Path() {
 			return wchar2mbchar(m_path.c_str()); 
 		}
-		std::wstring DirectoryInfo::getPathUni() {
+		std::wstring DirectoryInfo::get_PathUni() {
 			return m_path.c_str();
 		}
-		std::string DirectoryInfo::getName() {
+		std::string DirectoryInfo::get_Name() {
 			return fs::path(m_path).filename().c_str();
 		}
 
-		DirectoryInfo DirectoryInfo::getParent() {
+		DirectoryInfo DirectoryInfo::get_Parent() {
 			auto path = fs::path(m_path);
 			if (path.has_parent_path())
 				return DirectoryInfo(path.parent_path().c_str());;
 			return *this;
 		}
-		std::vector<FileInfo> DirectoryInfo::getFiles() {
+		std::vector<FileInfo> DirectoryInfo::get_Files() {
 			std::vector<FileInfo> res;
 			for (auto& f : fs::directory_iterator(m_path)) {
 				if (!f.is_directory())
@@ -73,7 +73,7 @@ namespace cobek {
 			}
 			return res;
 		}
-		std::vector<DirectoryInfo> DirectoryInfo::getDirectories() {
+		std::vector<DirectoryInfo> DirectoryInfo::get_Directories() {
 			std::vector<DirectoryInfo> res;
 			for (auto& f : fs::directory_iterator(m_path)) {
 				if (f.is_directory())
@@ -101,16 +101,16 @@ namespace cobek {
 			return fs::exists(fs::path(m_path));
 		}
 
-		DirectoryInfo FileInfo::getDirectory() {
+		DirectoryInfo FileInfo::get_Directory() {
 			return DirectoryInfo(fs::path(m_path).relative_path().c_str());
 		}
-		std::string FileInfo::getName() {
+		std::string FileInfo::get_Name() {
 			return fs::path(m_path).filename();
 		}
-		std::string FileInfo::getExtention() {
+		std::string FileInfo::get_Extention() {
 			return fs::path(m_path).extension();
 		}
-		std::string FileInfo::getFullName() {
+		std::string FileInfo::get_FullName() {
 			return fs::path(m_path).root_path();
 		}
 	}

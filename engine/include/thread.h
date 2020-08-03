@@ -7,7 +7,9 @@
 
 namespace cobek {
 	namespace Thread {
-		
+		class ThreadMgr {
+
+		};
 	}
 }
 #endif // !COBEK_THREAD_H
