@@ -20,9 +20,8 @@ int main(int argc, char* argv[]) {
 	auto parent = path.get_parent();
 	auto testDir = parent + "\\test-lib";
 	MonoManager::SetDirectory((testDir + "\\mono").c_str());
-	auto dom = MonoManager::CreateDomain("Test","v6.10.0.104");
-	//auto netStandard = MonoAssembly(dom, (testDir + "\\netstandard.dll").c_str());
-	auto assembly = MonoAssembly(dom, (testDir + "\\Designer.dll").c_str());
+	MonoManager::Init("Test","v6.10.0.104");
+	auto assembly = MonoAssembly(MonoManager::GetDomain(), (testDir + "\\Designer.dll").c_str());
 	if (assembly.is_Loaded()) {
 		printf("Assembly Opened: %s \n", assembly.get_name().c_str());
 		auto asmImage = assembly.get_Image();

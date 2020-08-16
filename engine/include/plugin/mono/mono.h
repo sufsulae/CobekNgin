@@ -6,6 +6,7 @@ namespace cobek {
 		namespace Mono {
 			using MonoType = Mono::__impl::Type;
 			using MonoObject = Mono::__impl::Object;
+			using MonoString = Mono::__impl::String;
 			using MonoField = Mono::__impl::Field;
 			using MonoMethod = Mono::__impl::Method;
 			using MonoProperty = Mono::__impl::Property;

@@ -82,7 +82,7 @@ namespace cobek {
 					bool get_isStatic();
 					void* get_value(Class* klass);
 					Class* get_class();
-					Type get_type();
+					Type* get_type();
 				};
 
 				class Method : public __internal::_monoBase {

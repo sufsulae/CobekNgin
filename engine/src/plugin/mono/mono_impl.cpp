@@ -51,8 +51,11 @@ namespace cobek {
 				Class* Field::get_class() {
 					return m_class;
 				}
-				Type Field::get_type() {
-					mono_field_get_type((MonoClassField*)m_handler);
+				Type* Field::get_type() {
+					if (m_type.m_handler == nullptr) {
+						m_type.m_handler = mono_field_get_type((MonoClassField*)m_handler);
+					}
+					return &m_type;
 				}
 
 				//---Method---
@@ -315,7 +318,7 @@ namespace cobek {
 					}
 					auto table = mono_image_get_table_info((MonoImage*)m_handler, MONO_TABLE_TYPEDEF);
 					auto tableRowLen = mono_table_info_get_rows(table);
-					for (size_t i = 1; i < tableRowLen; i++)
+					for (auto i = 1; i < tableRowLen; i++)
 					{
 						uint cols[MONO_TYPEDEF_SIZE];
 						mono_metadata_decode_row(table, i, cols, MONO_TYPEDEF_SIZE);
@@ -374,7 +377,7 @@ namespace cobek {
 						return true;
 					}
 					else {
-						printf("Failed to open Assembly: %s", asmFile);
+						printf("Failed to open Assembly: %s", asmFile.c_str());
 					}
 					return false;
 				}
@@ -402,7 +405,7 @@ namespace cobek {
 					m_handler = stringHandler;
 				}
 				String::String(const std::string& str) {
-					setW(str);
+					set(str);
 				}
 				String::String(const std::wstring& str) {
 					setW(str);
