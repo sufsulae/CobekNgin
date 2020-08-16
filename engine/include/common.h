@@ -3,7 +3,7 @@
 #define COBEK_COMMON_H
 
 #ifndef COBEK_HEADERS_H
-#include "headers.h"
+#include "include\headers.h"
 #endif
 
 #include "Eigen\Eigen"
@@ -13,10 +13,10 @@ namespace cobek {
 		template<typename IDType> static IDType __baseObjectMaxId = 0;
 		template<typename IDType> static std::vector<IDType> __baseObjectDeletedId = std::vector<IDType>();
 	}
-	//----FUNCTION----
+	//----Func----
 	#define FUNC(name, retType, ...) retType(*name)(__VA_ARGS__)
 
-	//----BASEOBJECT---
+	//----BaseObject---
 	template<typename IDType, class T> class BaseObject {
 	private:
 		IDType m_id;
@@ -253,7 +253,6 @@ namespace cobek {
 		T yMax() { return y + height; }
 		Vec2<T> center() { return Vec2<T>(xMax() / 2, yMax() / 2); }
 	};
-
 	template<typename T, uint row, uint column> struct Mat {
 		T data[row * column];
 
@@ -304,6 +303,165 @@ namespace cobek {
 		uint size() {
 			return row * column;
 		}
+	};
+
+	//---Delegate---
+	template<typename> class Delegate;
+	//This is ugliest way to avoid "void creation" error for this template
+	template<typename... Args> class Delegate<void(Args...)> {
+	public:
+		typedef void(*Func)(Args...);
+	private:
+		std::vector<Func> m_func;
+	public:
+		Delegate() { this->m_func = std::vector<Func>(); }
+		void add(const Func& func) {
+			this->m_func.push_back(func);
+		}
+		void rem(const Func& func) {
+			auto len = this->m_func.size();
+			for (auto i = 0; i < len; i++) {
+				if (m_func[i] == func) {
+					m_func.erase(m_func.begin() + i);
+				}
+			}
+		}
+		void clear() { return this->m_func.clear(); }
+		size_t count() { return this->m_func.size(); }
+		void invoke(Args ... args) {
+			for (auto& i : m_func) {
+				i(args...);
+			}
+		}
+
+		void operator+=(const Func& func) { add(func); }
+		void operator-=(const Func& func) { rem(func); }
+		bool operator==(const Delegate<void(Args...)>& obj) const {
+			size_t len1 = this->m_func.size();
+			size_t len2 = obj.m_func.size();
+
+			if (len1 == len2) {
+				for (size_t i = 0; i < len1; i++)
+				{
+					bool same = false;
+					for (size_t j = 0; j < len1; j++) {
+						if (obj.m_func[j] == m_func[i]) {
+							same = true;
+							break;
+						}
+					}
+					if (!same)
+						return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		bool operator!=(const Delegate<void(Args...)>& obj) const {
+			size_t len1 = this->m_func.size();
+			size_t len2 = obj.m_func.size();
+
+			if (len1 == len2) {
+				for (size_t i = 0; i < len1; i++)
+				{
+					bool same = false;
+					for (size_t j = 0; j < len2; j++)
+					{
+						if (obj.m_func[j] == m_func[i]) {
+							same = true;
+							break;
+						}
+					}
+					if (!same)
+						return true;
+				}
+				return false;
+			}
+			return true;
+		}
+	};
+	//Dont trust your intellisense for this template
+	template<typename retType, typename... Args> class Delegate<retType(Args...)> {
+	public:
+		typedef retType(*Func)(Args...);
+	private:
+		std::vector<Func> m_func;
+	public:
+		Delegate() { this->m_func = std::vector<Func>(); }
+		void add(const Func& func) {
+			this->m_func.push_back(func);
+		}
+		void rem(const Func& func) {
+			auto len = this->m_func.size();
+			for (auto i = 0; i < len; i++) {
+				if (m_func[i] == func) {
+					m_func.erase(m_func.begin() + i);
+				}
+			}
+		}
+		void clear() { return this->m_func.clear(); }
+		size_t count() { return this->m_func.size(); }
+		void invoke(std::vector<retType>* retVal = nullptr, Args ... args) {
+			if (retVal == nullptr) {
+				for (auto& i : m_func) {
+					i(args...);
+				}
+			}
+			else {
+				retVal->clear();
+				for (auto& i : m_func) {
+					retVal->push_back(i(args...));
+				}
+			}
+		}
+
+		void operator+=(const Func& func) { add(func); }
+		void operator-=(const Func& func) { rem(func); }
+		bool operator==(const Delegate<retType(Args...)>& obj) const {
+			size_t len1 = this->m_func.size();
+			size_t len2 = obj.m_func.size();
+
+			if (len1 == len2) {
+				for (size_t i = 0; i < len1; i++)
+				{
+					bool same = false;
+					for (size_t j = 0; j < len1; j++) {
+						if (obj.m_func[j] == m_func[i]) {
+							same = true;
+							break;
+						}
+					}
+					if (!same)
+						return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		bool operator!=(const Delegate<retType(Args...)>& obj) const {
+			size_t len1 = this->m_func.size();
+			size_t len2 = obj.m_func.size();
+
+			if (len1 == len2) {
+				for (size_t i = 0; i < len1; i++)
+				{
+					bool same = false;
+					for (size_t j = 0; j < len2; j++)
+					{
+						if (obj.m_func[j] == m_func[i]) {
+							same = true;
+							break;
+						}
+					}
+					if (!same)
+						return true;
+				}
+				return false;
+			}
+			return true;
+		}
+		
+		
 	};
 
 	typedef Vec2<float> Vec2F;

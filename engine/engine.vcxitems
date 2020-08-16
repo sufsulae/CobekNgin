@@ -24,18 +24,19 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\plugin\mono\mono_impl.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\thread.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\time.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\debug.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\file.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\debug.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\file.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\inline.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_gl.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_gles.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\engine.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\graphic.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\graphic_gl.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\plugin\mono\mono_impl.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\time.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\utility\file.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\debug.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\file.cpp" />
   </ItemGroup>
 </Project>

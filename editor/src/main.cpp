@@ -1,13 +1,14 @@
 #ifndef UNICODE
 #define UNICODE
 #endif
+#include "include\common.h"
 #include "include\time.h"
-#include "include\utility\file.h"
+#include "include\file.h"
 #include "include\plugin\mono\mono.h"
 
 using namespace cobek;
-using namespace cobek::Plugin::Mono;
-using namespace cobek::Utility::FileSystem;
+namespace Mono = ::Plugin::Mono;
+namespace fs = ::FileSystem;
 
 //int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) {
 //	MonoMgr::CreateDomain("Test");
@@ -15,26 +16,15 @@ using namespace cobek::Utility::FileSystem;
 //	return 0;
 //}
 
-int main(int argc, char* argv[]) {
-	auto path = DirectoryInfo(Directory::CurrentPath().c_str());
-	auto parent = path.get_parent();
-	auto testDir = parent + "\\test-lib";
-	MonoManager::SetDirectory((testDir + "\\mono").c_str());
-	MonoManager::Init("Test","v6.10.0.104");
-	auto assembly = MonoAssembly(MonoManager::GetDomain(), (testDir + "\\Designer.dll").c_str());
-	if (assembly.is_Loaded()) {
-		printf("Assembly Opened: %s \n", assembly.get_name().c_str());
-		auto asmImage = assembly.get_Image();
-		printf("Image name: %s \n", asmImage->get_Filename().c_str());
-		auto asmClass = asmImage->get_class("editor", "App");
-		if (asmClass != nullptr) {
-			printf("Class name: %s \n", asmClass->get_name().c_str());
-			auto methodList = asmClass->get_method("Main");
-			if (methodList.size() > 0) {
-				printf("Method Name: %s \n", methodList[0]->get_name().c_str());
-				methodList[0]->Invoke(nullptr, nullptr);
-			}
-		}
-	}
-	return 0;
+float testFunc() {
+	printf("Testing!!!");
+	return 10;
 }
+
+int main(int argc, char* argv[]) {
+	auto delegate = Delegate<float()>();
+	delegate += testFunc;
+	auto num = std::vector<float>();
+	delegate.invoke(&num);
+}
+

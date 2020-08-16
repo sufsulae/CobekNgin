@@ -7,13 +7,11 @@
 namespace cobek {
 	namespace Memory {
 		template<typename T> struct ArrayPtr;
-		namespace __internal__ {
-			template<typename T> struct _MapPtr {
-				std::string name;
-				size_t offset;
-				Memory::ArrayPtr<T> data;
-			};
-		}
+		template<typename T> struct MapPtr {
+			std::string name;
+			size_t offset;
+			Memory::ArrayPtr<T> data;
+		};
 		template<typename T> struct ArrayPtr {
 			T* ptr = nullptr;
 			size_t size = 0U;
@@ -33,11 +31,11 @@ namespace cobek {
 		template<typename T> class MappedBuffer : public BaseObject<id_t, MappedBuffer<T>> {
 		private:
 			std::vector<T> m_mem;
-			std::vector<__internal__::_MapPtr<T>> m_ptrs;
+			std::vector<MapPtr<T>> m_ptrs;
 		public:
 			MappedBuffer() : BaseObject<id_t, MappedBuffer<T>>() {
 				m_mem = std::vector<T>();
-				m_ptrs = std::vector<__internal__::_MapPtr<T>>();
+				m_ptrs = std::vector<MapPtr<T>>();
 			}
 			~MappedBuffer() {
 				m_ptrs.clear();
@@ -82,7 +80,7 @@ namespace cobek {
 				//if data not registered yet
 				if (!registered) {
 					m_mem.insert(m_mem.end(), array->ptr, array->ptr + array->length());
-					auto newPtr = __internal__::_MapPtr<T>();
+					auto newPtr = MapPtr<T>();
 					newPtr.data = *array;
 					newPtr.name = name;
 					newPtr.offset = NULL;

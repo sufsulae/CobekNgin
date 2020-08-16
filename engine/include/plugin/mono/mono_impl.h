@@ -187,7 +187,7 @@ namespace cobek {
 						m_handler = nullptr;
 					}
 
-					bool is_Loaded() { return m_handler != nullptr; }
+					bool isLoaded() { return m_handler != nullptr; }
 
 					Image* get_Image() { return &m_image; }
 					std::string get_name();

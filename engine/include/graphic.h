@@ -1,10 +1,10 @@
 #pragma once
 #ifndef COBEK_GRAPHIC_H
 #define COBEK_GRAPHIC_H
-#include "common.h"
+#include "include\common.h"
 
 #ifndef COBEK_MEMORY_H
-#include "memory.h"
+#include "include\memory.h"
 #endif
 
 #define COBEK_IGRAPHIC(className) \
@@ -42,7 +42,7 @@
 		int DrawVertices(MappedBuffer<float>* vertices, GraphicDrawMode drawMode) override;\
 		int DrawViewPort(RectI rect) override;\
 		int DrawScissor(RectI rect) override;\
-		int ClearColor(const Color& color) override;\
+		int ClearColor(const ColorF& color) override;\
 		int ClearDepth(const float& depth) override;\
 		int ClearStencil(const int& stencil) override;\
 		int BeginRender() override;\
@@ -243,7 +243,7 @@ namespace cobek {
 		};
 
 		//----GRAPHIC RESOURCE---
-		class Surface : public BaseObject<ulong, Surface> {
+		class Surface : public BaseObject<id_t, Surface> {
 		public:
 			GraphicSurfaceData param;
 			void* winData;
@@ -391,10 +391,10 @@ namespace cobek {
 			virtual int EndRender() { return false; }
 		};
 
-		namespace __internal__ {
+		namespace __internal {
 #ifdef COBEK_INCLUDE_GRAPHIC_GL
 			//Generated Script for OpenGL Graphic
-			COBEK_IGRAPHIC(IGraphic_OGL);
+			COBEK_IGRAPHIC(IGraphic_GL);
 #endif
 #ifdef COBEK_INCLUDE_GRAPHIC_GLES
 			//Generated Script for OpenGL ES Graphic
@@ -417,7 +417,6 @@ namespace cobek {
 			COBEK_IGRAPHIC(IGraphic_DX12);
 #endif
 		}
-
 
 		//----GRAPHIC MANAGER----
 		class GraphicMgr final {
