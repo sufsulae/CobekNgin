@@ -1,26 +1,26 @@
-﻿using Avalonia;
-using System;
+﻿using System;
+using Eto.Forms;
+using Eto.Drawing;
+using System.Threading;
 
-namespace designer
-{
-    sealed class MainApp : Application {
-        
-    }
-
-    public static class App
-    {
-        private static AppBuilder m_builder;
-
-        public static bool isInitialized { get; private set; }
-        public static void Init(string[] args) {
-            m_builder = AppBuilder.Configure<MainApp>().UsePlatformDetect();
-            m_builder.StartWithClassicDesktopLifetime(args);
-            isInitialized = true;
-        }
-
-        [STAThread]
-        private static int Main(string[] args) {
-            return 0;
+namespace designer {
+    public static class App {
+        //private static Application m_app;
+        //public static void Init() {
+        //    if (m_app == null) {
+        //        m_app = new Application();
+        //        m_app.Run(new Form() { Size = new Size(200, 200) });
+        //    }
+        //}
+        static void Main() {
+            var newThread = new Thread(() =>{
+                new Application().Run(new Form() { Title = "Just Another Frame" });
+            });
+            newThread.Start();
+            while (newThread.IsAlive) {
+                Thread.Sleep(1);
+            }
+            newThread.Join();
         }
     }
 }

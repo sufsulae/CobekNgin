@@ -25,21 +25,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\time.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\fileUtil.h">
-      <Filter>include\utillity</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\inlineUtil.h">
-      <Filter>include\utillity</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\utility.h">
       <Filter>include\utillity</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\plugin\mono\mono.h">
-      <Filter>3rdParty\mono</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\debugUtil.h">
-      <Filter>include</Filter>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\debug.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\file.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\inline.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\plugin\mono\mono.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\plugin\mono\mono_impl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_gl.c">
@@ -48,13 +41,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_gles.c">
       <Filter>3rdParty\glad</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\plugin\mono\mono.cpp">
-      <Filter>3rdParty\mono</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\engine.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\utility\fileUtil.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\graphic.cpp">
@@ -63,6 +50,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\time.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\utility\file.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\plugin\mono\mono_impl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

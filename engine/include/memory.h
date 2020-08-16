@@ -6,6 +6,14 @@
 
 namespace cobek {
 	namespace Memory {
+		template<typename T> struct ArrayPtr;
+		namespace __internal__ {
+			template<typename T> struct _MapPtr {
+				std::string name;
+				size_t offset;
+				Memory::ArrayPtr<T> data;
+			};
+		}
 		template<typename T> struct ArrayPtr {
 			T* ptr = nullptr;
 			size_t size = 0U;
@@ -22,15 +30,6 @@ namespace cobek {
 			size_t length() { return size / sizePerElement; }
 
 		};
-
-		namespace __internal__ {
-			template<typename T> struct _MapPtr {
-				std::string name;
-				size_t offset;
-				Memory::ArrayPtr<T> data;
-			};
-		}
-
 		template<typename T> class MappedBuffer : public BaseObject<id_t, MappedBuffer<T>> {
 		private:
 			std::vector<T> m_mem;

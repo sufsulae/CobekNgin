@@ -6,7 +6,12 @@
 
 namespace cobek {
 	namespace Utility {
-		
+		class Debug final {
+		private:
+
+		public:
+			static void Log(const char* fmt, ...);
+		};
 	}
 }
 

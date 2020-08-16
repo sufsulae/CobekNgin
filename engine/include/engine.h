@@ -6,6 +6,7 @@
 #include "math.h"
 #include "memory.h"
 #include "graphic.h"
+#include "thread.h"
 
 #if defined(COBEK_ENABLE_3RDPARTY_MONO)
 #include "plugin\mono\mono.h"
