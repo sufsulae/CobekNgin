@@ -2,6 +2,7 @@
 #define UNICODE
 #endif
 #include "include\common.h"
+#include "include\debug.h"
 #include "include\time.h"
 #include "include\file.h"
 #include "include\plugin\mono\mono.h"
@@ -16,15 +17,9 @@ namespace fs = ::FileSystem;
 //	return 0;
 //}
 
-float testFunc() {
-	printf("Testing!!!");
-	return 10;
-}
-
 int main(int argc, char* argv[]) {
-	auto delegate = Delegate<float()>();
-	delegate += testFunc;
-	auto num = std::vector<float>();
-	delegate.invoke(&num);
+	Debug::SetLogFile("testFile.txt");
+	Debug::Log("Yey Berhasil %s", "Nge print ini");
+	Debug::Log("Yey Berhasil Lagi %s", "Nge print ini dan itu");
 }
 

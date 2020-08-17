@@ -156,6 +156,15 @@ namespace cobek {
 			delete f;
 			return false;
 		}
+		int File::WriteAllBytes(const char* path, const char* data) {
+			if (path == nullptr)
+				return false;
+			auto f = new fs::ofstream(path);
+			*f << data;
+			f->close();
+			delete f;
+			return true;
+		}
 		int File::WriteAllBytes(const char* path, const char* data, ullong size) {
 			if (path == nullptr)
 				return false;
@@ -165,11 +174,20 @@ namespace cobek {
 			delete f;
 			return true;
 		}
-		int File::WriteAllBytes(const char* path, const char* data) {
+		int File::WriteAllBytesToEnd(const char* path, const char* data) {
 			if (path == nullptr)
 				return false;
-			auto f = new fs::ofstream(path);
+			auto f = new fs::ofstream(path, ios::app);
 			*f << data;
+			f->close();
+			delete f;
+			return true;
+		}
+		static int WriteAllBytesToEnd(const char* path, const char* data, ullong size) {
+			if (path == nullptr)
+				return false;
+			auto f = new fs::ofstream(path, ios::app);
+			f->write(data, size);
 			f->close();
 			delete f;
 			return true;

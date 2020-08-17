@@ -38,25 +38,25 @@ namespace cobek {
 
 			inline GraphicShaderInputDataType __getShaderInputDataType(uint code) {
 				switch (code) {
-				case GL_FLOAT:			return GraphicShaderInputDataType::FLOAT;
-				case GL_FLOAT_VEC2:		return GraphicShaderInputDataType::VEC2;
-				case GL_FLOAT_VEC3:		return GraphicShaderInputDataType::VEC3;
-				case GL_FLOAT_VEC4:		return GraphicShaderInputDataType::VEC4;
-				case GL_FLOAT_MAT2:		return GraphicShaderInputDataType::MAT2X2;
-				case GL_FLOAT_MAT3:		return GraphicShaderInputDataType::MAT3X3;
-				case GL_FLOAT_MAT4:		return GraphicShaderInputDataType::MAT4X4;
+					case GL_FLOAT:			return GraphicShaderInputDataType::FLOAT;
+					case GL_FLOAT_VEC2:		return GraphicShaderInputDataType::VEC2;
+					case GL_FLOAT_VEC3:		return GraphicShaderInputDataType::VEC3;
+					case GL_FLOAT_VEC4:		return GraphicShaderInputDataType::VEC4;
+					case GL_FLOAT_MAT2:		return GraphicShaderInputDataType::MAT2X2;
+					case GL_FLOAT_MAT3:		return GraphicShaderInputDataType::MAT3X3;
+					case GL_FLOAT_MAT4:		return GraphicShaderInputDataType::MAT4X4;
 				}
 				return GraphicShaderInputDataType::UNKNOWN;
 			}
 			inline uint __getDrawMode(GraphicDrawMode code) {
 				switch (code) {
-				case GraphicDrawMode::POINTS:			return GL_POINTS;
-				case GraphicDrawMode::LINE_STRIP:		return GL_LINE_STRIP;
-				case GraphicDrawMode::LINE_LOOP:		return GL_LINE_LOOP;
-				case GraphicDrawMode::LINES:			return GL_LINES;
-				case GraphicDrawMode::TRIANGLE_STRIP:	return GL_TRIANGLE_STRIP;
-				case GraphicDrawMode::TRIANGLE_FAN:		return GL_TRIANGLE_FAN;
-				case GraphicDrawMode::TRIANGLES:		return GL_TRIANGLES;
+					case GraphicDrawMode::POINTS:			return GL_POINTS;
+					case GraphicDrawMode::LINE_STRIP:		return GL_LINE_STRIP;
+					case GraphicDrawMode::LINE_LOOP:		return GL_LINE_LOOP;
+					case GraphicDrawMode::LINES:			return GL_LINES;
+					case GraphicDrawMode::TRIANGLE_STRIP:	return GL_TRIANGLE_STRIP;
+					case GraphicDrawMode::TRIANGLE_FAN:		return GL_TRIANGLE_FAN;
+					case GraphicDrawMode::TRIANGLES:		return GL_TRIANGLES;
 				}
 				return GL_FALSE;
 			}
@@ -125,6 +125,9 @@ namespace cobek {
 				}
 				wglMakeCurrent((HDC)winSurface->hwndDC, (HGLRC)this->_gctx);
 
+				if (gladLoadGL() != true) {
+					
+				}
 				if (glewInit() != GLEW_OK) {
 					if (logCallback)
 						logCallback(-1, this->get_GraphicType(), Util::StringFormat("Failed to initializing GLEW: %S", Util::LastSysErr()));

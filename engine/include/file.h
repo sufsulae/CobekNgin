@@ -54,6 +54,8 @@ namespace cobek {
 			static int ReadAllBytes(const char* path, const char** fileData, ullong* fileSize = nullptr);
 			static int WriteAllBytes(const char* path, const char* data);
 			static int WriteAllBytes(const char* path, const char* data, ullong size);
+			static int WriteAllBytesToEnd(const char* path, const char* data);
+			static int WriteAllBytesToEnd(const char* path, const char* data, ullong size);
 		};
 	}
 }

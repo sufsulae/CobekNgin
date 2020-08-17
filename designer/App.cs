@@ -5,22 +5,36 @@ using System.Threading;
 
 namespace designer {
     public static class App {
-        //private static Application m_app;
-        //public static void Init() {
-        //    if (m_app == null) {
-        //        m_app = new Application();
-        //        m_app.Run(new Form() { Size = new Size(200, 200) });
-        //    }
-        //}
-        static void Main() {
-            var newThread = new Thread(() =>{
-                new Application().Run(new Form() { Title = "Just Another Frame" });
-            });
-            newThread.Start();
-            while (newThread.IsAlive) {
-                Thread.Sleep(1);
+        public static Thread Thread { get; private set; }
+        public static Application Application { get; private set; }
+        public static Form Form { get; private set; }
+        public static bool isRunning { get; private set; }
+
+        public static void Init() {
+            
+        }
+        public static void Run(bool force = false) {
+            if (!isRunning)
+            {
+                Thread = new Thread(() =>
+                {
+                    isRunning = true;
+                    Application = new Application();
+                    Form = new Form();
+                    App.Form.WindowStyle = WindowStyle.None;
+                    Application.Run(Form);
+                });
+                Thread.Start();
+                while (Thread.IsAlive)
+                {
+                    Thread.Sleep(1);
+                }
+                Thread.Join();
+                isRunning = false;
             }
-            newThread.Join();
+        }
+        public static void Close() {
+          
         }
     }
 }

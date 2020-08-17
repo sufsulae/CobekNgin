@@ -1,13 +1,8 @@
 #include "include\debug.h"
-
 namespace cobek {
-	const char* Debug::m_logFilePath = nullptr;
+	std::string Debug::m_logFilePath = std::string();
 	Delegate<void(std::string)> Debug::LogCallback = Delegate<void(std::string)>();
-
-	void Debug::Log(const char* fmt, ...) {
-		
-	}
 	void Debug::SetLogFile(const char* logFile) {
-		
+		m_logFilePath = logFile;
 	}
 }

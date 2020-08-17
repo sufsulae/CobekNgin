@@ -5,26 +5,6 @@
 #include "include\headers.h"
 namespace cobek {
 	namespace Utility {
-		inline std::string strprintf(const char* fmt, ...) {
-			char buff[4096];
-			va_list args;
-			va_start(args, fmt);
-			vsnprintf(buff, sizeof(buff), fmt, args);
-			va_end(args);
-			return std::string(buff);
-		}
-		inline std::wstring strwprintf(const wchar_t* fmt, ...) {
-			wchar_t buff[4096];
-			va_list args;
-			va_start(args, fmt);
-#if COBEK_PLATFORM_WIN
-			_vsnwprintf_s(buff, sizeof(buff), fmt, args);
-#else
-			_vsnwprintf(buff, sizeof(buff), fmt, args);
-#endif
-			va_end(args);
-			return std::wstring(buff);
-		}
 		inline bool strcontains(const char* src, const char* tData) {
 			size_t srcLen = strlen(src);
 			size_t tDataLen = strlen(tData);
@@ -78,7 +58,6 @@ namespace cobek {
 #endif
 			return newString;
 		}
-
 		template<typename ... Args> inline std::string strformat(const std::string& format, Args ... args)
 		{
 			size_t size = snprintf(nullptr, 0, format.c_str(), args ...) + 1;
