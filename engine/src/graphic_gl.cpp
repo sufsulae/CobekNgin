@@ -175,11 +175,11 @@ namespace cobek {
 				uint hPtr[2];
 				glGenBuffers(2, hPtr);
 				glBindBuffer(GL_ARRAY_BUFFER, hPtr[0]);
-				size_t vLen = mesh->get_vertexSize();
+				size_t vLen = mesh->get_vertexBufferSize();
 				glBufferData(GL_ARRAY_BUFFER, vLen, NULL, mesh->isStatic ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
 				__getErr(this->logCallback, "glBufferData", __LINE__);
 				size_t offset = 0U;
-				auto ptrs = mesh->get_vertexPtrs();
+				auto ptrs = mesh->get_vertexBufferPtrs();
 				for (auto v : ptrs) {
 					auto size = v.size;
 					glBufferSubData(GL_ARRAY_BUFFER, offset, size, v.ptr);
@@ -188,8 +188,8 @@ namespace cobek {
 				}
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, hPtr[1]);
 
-				size_t iLen = mesh->get_indexSize() * sizeof(float);
-				auto iPtr = mesh->get_indexPtr();
+				size_t iLen = mesh->get_indexBufferSize() * sizeof(float);
+				auto iPtr = mesh->get_indexBufferPtr();
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, iLen, iPtr.ptr, mesh->isStatic ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
 				__getErr(this->logCallback, "glBufferSubData", __LINE__);
 				return true;
@@ -312,14 +312,14 @@ namespace cobek {
 				BindMesh(mesh);
 				size_t offset = 0U;
 				for (auto v : mesh->material->shaderInputHandler) {
-					auto meshPtr = mesh->get_vertexPtr(v.first.c_str());
+					auto meshPtr = mesh->get_vertexBufferPtr(v.first.c_str());
 					glEnableVertexAttribArray((uint)v.second);
 					__getErr(this->logCallback, "glEnableVertexAttribArray", __LINE__);
 					glVertexAttribPointer((uint)v.second, meshPtr.stride, GL_FLOAT, GL_FALSE, 0, (void*)offset);
 					__getErr(this->logCallback, "glVertexAttribPointer", __LINE__);
 					offset += meshPtr.size;
 				}
-				glDrawElements(__getDrawMode(drawMode), mesh->get_indexSize(), GL_UNSIGNED_INT, (void*)NULL);
+				glDrawElements(__getDrawMode(drawMode), mesh->get_indexBufferSize(), GL_UNSIGNED_INT, (void*)NULL);
 				for (auto m : mesh->material->shaderInputHandler) {
 					glDisableVertexAttribArray((uint)m.second);
 					__getErr(this->logCallback, "glDisableVertexAttribArray", __LINE__);

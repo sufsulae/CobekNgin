@@ -18,10 +18,10 @@ namespace cobek {
 			}
 			namespace __impl {
 				//---Field---
-				std::string Field::get_name() {
+				std::string Field::getName() {
 					return m_name;
 				}
-				MonoMemberVisibility Field::get_visibility() {
+				MonoMemberVisibility Field::getVisibility() {
 					if (m_visibility == MonoMemberVisibility::Unknown) {
 						auto flags = mono_field_get_flags((MonoClassField*)m_handler) & MONO_FIELD_ATTR_FIELD_ACCESS_MASK;
 						if (flags == MONO_FIELD_ATTR_PRIVATE)
@@ -37,21 +37,21 @@ namespace cobek {
 					}
 					return m_visibility;
 				}
-				bool Field::get_isStatic() {
+				bool Field::getIsStatic() {
 					return (mono_field_get_flags((MonoClassField*)m_handler) & MONO_FIELD_ATTR_STATIC) != 0;
 				}
-				void Field::set_value(Object& obj) {
-					mono_field_set_value((MonoObject*)obj.get_internalHandler(), (MonoClassField*)m_handler, obj.value);
+				void Field::setValue(Object& obj) {
+					mono_field_set_value((MonoObject*)obj.getInternalHandler(), (MonoClassField*)m_handler, obj.value);
 				}
-				void* Field::get_value(Class* klass) {
+				void* Field::getValue(Class* klass) {
 					void* value = nullptr;
-					mono_field_get_value((MonoObject*)klass->get_internalHandler(), (MonoClassField*)m_handler, &value);
+					mono_field_get_value((MonoObject*)klass->getInternalHandler(), (MonoClassField*)m_handler, &value);
 					return value;
 				}
-				Class* Field::get_class() {
+				Class* Field::getClass() {
 					return m_class;
 				}
-				Type* Field::get_type() {
+				Type* Field::getType() {
 					if (m_type.m_handler == nullptr) {
 						m_type.m_handler = mono_field_get_type((MonoClassField*)m_handler);
 					}
@@ -63,7 +63,7 @@ namespace cobek {
 					MonoObject* exc = nullptr;
 					void* instance = nullptr;
 					if (obj != nullptr) {
-						instance = obj->get_internalHandler();
+						instance = obj->getInternalHandler();
 					}
 					auto retVal = mono_runtime_invoke((MonoMethod*)m_handler, instance, Params, &exc);
 					if (exc != nullptr) {
@@ -71,9 +71,13 @@ namespace cobek {
 					}
 					auto newObj = Object();
 					newObj.m_handler = retVal;
+					if (retVal != nullptr)
+						newObj.value = mono_object_unbox(retVal);
+					else
+						newObj.value = nullptr;
 					return newObj;
 				}
-				std::vector<Type*> Method::get_params() {
+				std::vector<Type*> Method::getParams() {
 					if (m_hasCachedParams) {
 						auto res = std::vector<Type*>(m_paramCount);
 						for (byte i = 0; i < m_paramCount; i++) {
@@ -100,7 +104,7 @@ namespace cobek {
 						return res;
 					}
 				}
-				MonoMemberVisibility Method::get_visibility() {
+				MonoMemberVisibility Method::getVisibility() {
 					if (m_visibility == MonoMemberVisibility::Unknown) {
 						auto flags = mono_method_get_flags((MonoMethod*)m_handler, NULL) & MONO_METHOD_ATTR_ACCESS_MASK;
 						if (flags == MONO_METHOD_ATTR_PRIVATE)
@@ -116,21 +120,21 @@ namespace cobek {
 					}
 					return m_visibility;
 				}
-				bool Method::get_isStatic() {
+				bool Method::getIsStatic() {
 					return (mono_method_get_flags((MonoMethod*)m_handler,NULL) & MONO_METHOD_ATTR_STATIC) != 0;
 				}
-				bool Method::get_isVirtual() {
+				bool Method::getIsVirtual() {
 					return (mono_method_get_flags((MonoMethod*)m_handler, NULL) & MONO_METHOD_ATTR_VIRTUAL) != 0;
 				}
-				std::string Method::get_name() {
+				std::string Method::getName() {
 					if (m_name.empty())
 						m_name = mono_method_get_name((MonoMethod*)m_handler);
 					return m_name;
 				}
-				Class* Method::get_class() {
+				Class* Method::getClass() {
 					return m_class;
 				}
-				Type* Method::get_retType() {
+				Type* Method::getRetType() {
 					if (m_cachedRetVal.m_handler = nullptr) {
 						m_cachedRetVal.m_handler = mono_signature_get_return_type((MonoMethodSignature*)m_signature);
 					}
@@ -138,62 +142,62 @@ namespace cobek {
 				}
 
 				//---Property---
-				std::string Property::get_name() {
+				std::string Property::getName() {
 					if (m_name.empty()){
 						m_name = mono_property_get_name((MonoProperty*)m_handler);
 					}
 					return m_name;
 				}
-				Method* Property::get_getMethod() {
+				Method* Property::getGetMethod() {
 					if (m_getMethod.m_handler == nullptr) {
 						m_getMethod.m_handler = mono_property_get_get_method((MonoProperty*)m_handler);
 					}
 					return &m_getMethod;
 				}
-				Method* Property::get_setMethod() {
+				Method* Property::getSetMethod() {
 					if (m_setMethod.m_handler == nullptr) {
 						m_setMethod.m_handler = mono_property_get_set_method((MonoProperty*)m_handler);
 					}
 					return &m_setMethod;
 				}
-				Class* Property::get_class() {
+				Class* Property::getClass() {
 					return m_class;
 				}
 
 				//---Class---
-				std::string Class::get_name() {
+				std::string Class::getName() {
 					return m_name;
 				}
-				std::string Class::get_namespace() {
+				std::string Class::getNamespace() {
 					return m_namespace;
 				}
-				Field* Class::get_field(std::string name) {
+				Field* Class::getField(std::string name) {
 					if (name.empty())
 						return nullptr;
-					auto fields = get_fields();
+					auto fields = getFields();
 					auto fieldsLen = fields.size();
 					if (fieldsLen > 0) {
 						for (size_t i = 0; i < fieldsLen; i++) {
-							if (fields[i]->get_name() == name)
+							if (fields[i]->getName() == name)
 								return fields[i];
 						}
 					}
 					return nullptr;
 				}
-				Property* Class::get_property(std::string name) {
+				Property* Class::getProperty(std::string name) {
 					if (name.empty())
 						return nullptr;
-					auto properties = get_properties();
+					auto properties = getProperties();
 					auto propertiesLen = properties.size();
 					if (propertiesLen > 0) {
 						for (size_t i = 0; i < propertiesLen; i++) {
-							if (properties[i]->get_name() == name)
+							if (properties[i]->getName() == name)
 								return properties[i];
 						}
 					}
 					return nullptr;
 				}
-				std::vector<Field*> Class::get_fields() {
+				std::vector<Field*> Class::getFields() {
 					if (!m_hasCachedFields) {
 						m_cachedFields.clear();
 						m_hasCachedFields = false;
@@ -215,7 +219,7 @@ namespace cobek {
 					}
 					return res;
 				}
-				std::vector<Property*> Class::get_properties() {
+				std::vector<Property*> Class::getProperties() {
 					if (!m_hasCachedProperties) {
 						m_cachedProperties.clear();
 						void* iter = nullptr;
@@ -236,7 +240,7 @@ namespace cobek {
 					}
 					return res;
 				}
-				std::vector<Method*> Class::get_method(std::string name) {
+				std::vector<Method*> Class::getMethod(std::string name) {
 					if (!m_hasCachedMethods) {
 						m_cachedMethods.clear();
 						void* iteration = nullptr;
@@ -262,13 +266,13 @@ namespace cobek {
 					else {
 						auto ret = std::vector<Method*>();
 						for (auto& i : m_cachedMethods) {
-							if (i.m_name == name)
+							if (i.getName() == name)
 								ret.push_back(&i);
 						}
 						return ret;
 					}
 				}
-				Type* Class::get_type() {
+				Type* Class::getType() {
 					if(m_type.m_handler == nullptr)
 						m_type.m_handler = mono_class_get_type((MonoClass*)m_handler);
 					return &m_type;
@@ -282,62 +286,68 @@ namespace cobek {
 				void Class::Init(void** params) {
 					if (!m_hasInitialized) {
 						Init();
-						get_method(".ctor")[0]->Invoke(this, params);
+						getMethod(".ctor")[0]->Invoke(this, params);
 					}
 				}
 				Class Class::CreateInstance(bool initialize) {
-					auto newClass = Class();
-					newClass.m_handler = mono_object_new((MonoDomain*)Manager::GetDomain()->get_internalHandler(), (MonoClass*)m_handler);
+					auto newClass = Class(mono_object_new((MonoDomain*)Manager::GetDomain()->getInternalHandler(), (MonoClass*)m_handler));
 					if (initialize)
 						newClass.Init();
 					return newClass;
 				}
 				Class Class::CreateInstance(void** params) {
-					auto newClass = Class();
-					newClass.m_handler = mono_object_new((MonoDomain*)Manager::GetDomain()->get_internalHandler(), (MonoClass*)m_handler);
+					auto newClass = Class(mono_object_new((MonoDomain*)Manager::GetDomain()->getInternalHandler(), (MonoClass*)m_handler));
 					newClass.Init(params);
 					return newClass;
 				}
 
 				//---Image---
-				std::string Image::get_name() {
+				std::string Image::getName() {
 					if (m_handler == nullptr)
 						return nullptr;
 					return mono_image_get_name((MonoImage*)m_handler);
 				}
-				std::string Image::get_Filename() {
+				std::string Image::getFilename() {
 					return mono_image_get_filename((MonoImage*)m_handler);
 				}
-				std::string Image::get_Guid() {
+				std::string Image::getGuid() {
 					return mono_image_get_guid((MonoImage*)m_handler);
 				}
-				Class* Image::get_class(std::string namespaceName, std::string className) {
+				Class* Image::getClass(std::string className, std::string namespaceName) {
 					for (auto& i : m_Classes) {
 						if (i.m_namespace == namespaceName && i.m_name == className)
 							return &i;
 					}
-					auto table = mono_image_get_table_info((MonoImage*)m_handler, MONO_TABLE_TYPEDEF);
-					auto tableRowLen = mono_table_info_get_rows(table);
-					for (auto i = 1; i < tableRowLen; i++)
-					{
-						uint cols[MONO_TYPEDEF_SIZE];
-						mono_metadata_decode_row(table, i, cols, MONO_TYPEDEF_SIZE);
-						auto name = mono_metadata_string_heap((MonoImage*)m_handler, cols[MONO_TYPEDEF_NAME]);
-						if (className == name) {
-							auto klass = mono_class_get((MonoImage*)m_handler, (i + 1) | MONO_TOKEN_TYPE_DEF);
-							if (klass != nullptr) {
-								auto newKlass = Class();
-								newKlass.m_name = className;
-								newKlass.m_namespace = namespaceName;
-								newKlass.m_handler = klass;
-								m_Classes.push_back(newKlass);
-								return &m_Classes[m_Classes.size() - 1];
+					MonoClass* klass = nullptr;
+					if (!namespaceName.empty()) {
+						klass = mono_class_from_name((MonoImage*)m_handler, namespaceName.c_str(), className.c_str());
+					}
+					else {
+						auto table = mono_image_get_table_info((MonoImage*)m_handler, MONO_TABLE_TYPEDEF);
+						auto tableRowLen = mono_table_info_get_rows(table);
+						for (auto i = 1; i < tableRowLen; i++)
+						{
+							uint cols[MONO_TYPEDEF_SIZE];
+							mono_metadata_decode_row(table, i, cols, MONO_TYPEDEF_SIZE);
+							auto name = mono_metadata_string_heap((MonoImage*)m_handler, cols[MONO_TYPEDEF_NAME]);
+							if (className == name) {
+								klass = mono_class_get((MonoImage*)m_handler, (i + 1) | MONO_TOKEN_TYPE_DEF);
+								if(klass != nullptr)
+									namespaceName = mono_class_get_namespace(klass);
+								break;
 							}
 						}
 					}
+					if (klass != nullptr) {
+						auto newKlass = Class(klass);
+						newKlass.m_name = className;
+						newKlass.m_namespace = namespaceName;
+						m_Classes.push_back(newKlass);
+						return &m_Classes[m_Classes.size() - 1];
+					}
 					return nullptr;
 				}
-				bool Image::is_Dynamic() {
+				bool Image::getIsDynamic() {
 					return mono_image_is_dynamic((MonoImage*)m_handler);
 				}
 
@@ -360,7 +370,7 @@ namespace cobek {
 					/*return mono_jit_exec((MonoDomain*)m_dom->get_internalHandler(), (MonoAssembly*)m_handler, argc -1, argv + 1);*/
 				}
 				int Assembly::Open(std::string asmFile) {
-					auto domHandler = m_dom->get_internalHandler();
+					auto domHandler = m_dom->getInternalHandler();
 					auto newAsm = mono_domain_assembly_open((MonoDomain*)domHandler, asmFile.c_str());
 					if (newAsm != nullptr) {
 						if (m_handler != nullptr)
@@ -389,12 +399,12 @@ namespace cobek {
 					m_image.m_handler = nullptr;
 					return true;
 				}
-				std::string Assembly::get_name() {
+				std::string Assembly::getName() {
 					if (m_asmName == nullptr)
 						return nullptr;
 					return mono_assembly_name_get_name((MonoAssemblyName*)m_asmName);
 				}
-				std::string Assembly::get_Culture() {
+				std::string Assembly::getCulture() {
 					if (m_asmName == nullptr)
 						return nullptr;
 					return mono_assembly_name_get_culture((MonoAssemblyName*)m_asmName);
@@ -440,12 +450,9 @@ namespace cobek {
 				const char* Manager::CheckCorlibVersion() {
 					return mono_check_corlib_version();
 				}
-				void Manager::SetAssemblyPath(std::string path) {
-					mono_set_assemblies_path(path.c_str());
-				}
-				void Manager::SetDirectory(std::string asmPath) {
+				void Manager::SetMonoPath(std::string path) {
 					mono_config_parse(NULL);
-					mono_set_assemblies_path(asmPath.c_str());
+					mono_set_assemblies_path(path.c_str());
 				}
 				void Manager::Init(std::string domainName, std::string assemblyVersion) {
 					MonoDomain* domain = nullptr;

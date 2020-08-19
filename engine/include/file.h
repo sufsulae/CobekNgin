@@ -35,6 +35,8 @@ namespace cobek {
 			static bool isExist(const char* path);
 			static bool isDirectory(const char* path);
 			static bool isFile(const char* path);
+			static std::string Parent(std::string path);
+			static std::string Current();
 		};
 
 		class Directory final {
@@ -43,6 +45,7 @@ namespace cobek {
 			static int Delete(const char* path);
 			static std::string TempDirectory();
 			static std::string CurrentPath();
+			static std::string ParentPath();
 			static std::vector<std::string> GetFilesAndDirectories(const char* path);
 		};
 

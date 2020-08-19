@@ -97,6 +97,12 @@ namespace cobek {
 			auto p = fs::path(path);
 			return fs::is_block_file(p) || fs::is_character_file(path) || fs::is_regular_file(path);
 		}
+		std::string Path::Parent(std::string path) {
+			return ((fs::path)path).parent_path();
+		}
+		std::string Path::Current() {
+			return fs::current_path();
+		}
 
 		//---Directory---
 		int Directory::Create(const char* path) {
@@ -110,9 +116,6 @@ namespace cobek {
 			if (fs::is_directory(path))
 				return fs::remove(path);
 			return false;
-		}
-		std::string Directory::CurrentPath() {
-			return fs::current_path();
 		}
 		std::string Directory::TempDirectory() {
 			return fs::temp_directory_path();

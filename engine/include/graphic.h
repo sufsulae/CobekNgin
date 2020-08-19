@@ -282,7 +282,7 @@ namespace cobek {
 			}
 
 			int get_indexBuffer(const uint* buffer, size_t bufferSize);
-			int set_indexbuffer(ArrayPtr<uint>* indexArray);
+			int set_indexBuffer(ArrayPtr<uint>* indexArray);
 			ArrayPtr<uint> get_indexBufferPtr();
 
 			int get_vertexBuffer(const char* name, const float* buffer, size_t bufferSize);

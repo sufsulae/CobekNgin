@@ -55,7 +55,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\debug.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_egl.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\window.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_wgl.c" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

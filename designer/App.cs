@@ -1,40 +1,34 @@
-﻿using System;
+﻿using Eto.Drawing;
 using Eto.Forms;
-using Eto.Drawing;
 using System.Threading;
 
-namespace designer {
+namespace Designer
+{
     public static class App {
         public static Thread Thread { get; private set; }
         public static Application Application { get; private set; }
         public static Form Form { get; private set; }
         public static bool isRunning { get; private set; }
 
-        public static void Init() {
-            
-        }
-        public static void Run(bool force = false) {
+        public static void Run() {
             if (!isRunning)
             {
                 Thread = new Thread(() =>
                 {
                     isRunning = true;
-                    Application = new Application();
-                    Form = new Form();
-                    App.Form.WindowStyle = WindowStyle.None;
-                    Application.Run(Form);
+                    App.Application = new Application();
+                    App.Form = new Form();
+                    App.Form.Size = new Size(200, 200);
+                    App.Form.WindowStyle = WindowStyle.Default;
+                    App.Application.Run(App.Form);
                 });
                 Thread.Start();
-                while (Thread.IsAlive)
-                {
-                    Thread.Sleep(1);
-                }
-                Thread.Join();
-                isRunning = false;
             }
         }
-        public static void Close() {
-          
+        public static void Stop() {
+            if (isRunning) {
+                Thread.Join();
+            }
         }
     }
 }

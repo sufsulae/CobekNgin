@@ -11,6 +11,7 @@ namespace cobek {
 			using MonoMethod = Mono::__impl::Method;
 			using MonoProperty = Mono::__impl::Property;
 			using MonoClass = Mono::__impl::Class;
+			using MonoImage = Mono::__impl::Image;
 			using MonoAssembly = Mono::__impl::Assembly;
 			using MonoDomain = Mono::__impl::Domain;
 			using MonoManager = Mono::__impl::Manager;

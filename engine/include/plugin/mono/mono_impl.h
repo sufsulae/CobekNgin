@@ -24,7 +24,7 @@ namespace cobek {
 					void _free();
 				public:
 					//~_monoBase();
-					virtual void* get_internalHandler() { return m_handler; }
+					virtual void* getInternalHandler() { return m_handler; }
 					virtual bool isEmpty() { return m_handler == nullptr; }
 					virtual void Free() { return _free(); }
 				};
@@ -75,14 +75,14 @@ namespace cobek {
 					friend class Class;
 				public:
 					
-					std::string get_name();
-					MonoMemberVisibility get_visibility();
-					void set_value(Object& obj);
-					void set_valueDirect(void* obj);
-					bool get_isStatic();
-					void* get_value(Class* klass);
-					Class* get_class();
-					Type* get_type();
+					std::string getName();
+					MonoMemberVisibility getVisibility();
+					void setValue(Object& obj);
+					void setValueDirect(void* obj);
+					bool getIsStatic();
+					void* getValue(Class* klass);
+					Class* getClass();
+					Type* getType();
 				};
 
 				class Method : public __internal::_monoBase {
@@ -99,13 +99,13 @@ namespace cobek {
 					friend class Property;
 					friend class Class;
 				public:
-					std::string get_name();
-					std::vector<Type*> get_params();
-					MonoMemberVisibility get_visibility();
-					bool get_isStatic();
-					bool get_isVirtual();
-					Type* get_retType();
-					Class* get_class();
+					std::string getName();
+					std::vector<Type*> getParams();
+					MonoMemberVisibility getVisibility();
+					bool getIsStatic();
+					bool getIsVirtual();
+					Type* getRetType();
+					Class* getClass();
 					Object Invoke(Class* obj, void** Params);
 				};
 
@@ -118,10 +118,10 @@ namespace cobek {
 					Class* m_class;
 					friend class Class;
 				public:
-					std::string get_name();
-					Method* get_getMethod();
-					Method* get_setMethod();
-					Class* get_class();
+					std::string getName();
+					Method* getGetMethod();
+					Method* getSetMethod();
+					Class* getClass();
 				};
 
 				class Class : public __internal::_monoBase {
@@ -140,14 +140,15 @@ namespace cobek {
 					friend class Image;
 					friend class Manager;
 				public:
-					std::string get_name();
-					std::string get_namespace();
-					Field* get_field(std::string name);
-					Property* get_property(std::string name);
-					std::vector<Field*> get_fields();
-					std::vector<Property*> get_properties();
-					std::vector<Method*> get_method(std::string name = std::string());
-					Type* get_type();
+					Class(void* handler) { m_handler = handler; }
+					std::string getName();
+					std::string getNamespace();
+					Field* getField(std::string name);
+					Property* getProperty(std::string name);
+					std::vector<Field*> getFields();
+					std::vector<Property*> getProperties();
+					std::vector<Method*> getMethod(std::string name = std::string());
+					Type* getType();
 
 					void Init();
 					void Init(void** params);
@@ -161,11 +162,11 @@ namespace cobek {
 					friend class Manager;
 					friend class Assembly;
 				public:
-					std::string get_name();
-					std::string get_Filename();
-					std::string get_Guid();
-					Class* get_class(std::string namespaceName, std::string name);
-					bool is_Dynamic();
+					std::string getName();
+					std::string getFilename();
+					std::string getGuid();
+					Class* getClass(std::string name, std::string namespaceName = std::string());
+					bool getIsDynamic();
 				};
 
 				class Assembly : public __internal::_monoBase {
@@ -174,11 +175,11 @@ namespace cobek {
 					Image m_image;
 					void* m_asmName = nullptr;
 				public:
-					Assembly(Domain* domain) {
+					Assembly(Domain* domain = nullptr) {
 						m_dom = domain;
 						m_handler = nullptr;
 					}
-					Assembly(Domain* domain, std::string asmFile) {
+					Assembly(std::string asmFile, Domain* domain = nullptr) {
 						m_dom = domain;
 						Open(asmFile);
 					}
@@ -189,9 +190,9 @@ namespace cobek {
 
 					bool isLoaded() { return m_handler != nullptr; }
 
-					Image* get_Image() { return &m_image; }
-					std::string get_name();
-					std::string get_Culture();
+					Image* getImage() { return &m_image; }
+					std::string getName();
+					std::string getCulture();
 
 					int ExecEntryPoint(int argc, char** argv);
 					int Open(std::string asmFile);
@@ -209,7 +210,7 @@ namespace cobek {
 					static Domain m_domain;
 				public:
 					static const char* CheckCorlibVersion();
-					static void SetAssemblyPath(std::string path);
+					static void SetMonoPath(std::string path);
 					static void SetDirectory(std::string asmPath);
 					static void Init(std::string domainName, std::string assemblyVersion = std::string());
 					static Domain* GetDomain();
