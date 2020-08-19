@@ -1,7 +1,8 @@
 #include "include\graphic.h"
 #ifdef COBEK_INCLUDE_GRAPHIC_GL
+#include "include\window.h"
 #include "include\utility\inline.h"
-#include "glad\glad_gl.h"
+#include "include\utility\sys.h"
 
 using namespace cobek::Utility;
 namespace cobek {
@@ -15,8 +16,7 @@ namespace cobek {
 				if (InfoLogLength > 0) {
 					std::vector<char> ErrorMessage(InfoLogLength + 1);
 					glGetShaderInfoLog((uint)handler, InfoLogLength, NULL, &ErrorMessage[0]);
-					if (logCallback != nullptr)
-						logCallback(-1, this->get_GraphicType(), strformat("Failed to Compile %s Shader: \n%s", kind == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT", &ErrorMessage[0]));
+					logCallback.invoke(-1, this->get_GraphicType(), strformat("Failed to Compile %s Shader: \n%s", kind == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT", &ErrorMessage[0]));
 					return false;
 				}
 				return true;
@@ -28,8 +28,7 @@ namespace cobek {
 					int log_length = 1024;
 					GLchar message[1024];
 					glGetProgramInfoLog((uint)handler, 1024, &log_length, message);
-					if (logCallback != nullptr)
-						logCallback(-1, this->get_GraphicType(), strformat("Failed to %s Shader: \n%s", kind == GL_LINK_STATUS ? "LINK" : "VALIDATE", message));
+						logCallback.invoke(-1, this->get_GraphicType(), strformat("Failed to %s Shader: \n%s", kind == GL_LINK_STATUS ? "LINK" : "VALIDATE", message));
 					glDeleteProgram((uint)handler);
 					return false;
 				}
@@ -60,12 +59,10 @@ namespace cobek {
 				}
 				return GL_FALSE;
 			}
-			inline void __getErr(gLogCallback callBack, const char* funName, uint line) {
+			inline void __getErr(Delegate<void(int, int, std::string)>& callBack, const char* funName, uint line) {
 				uint code = glGetError();
 				if (code != GL_NO_ERROR) {
-					if (callBack != nullptr) {
-						callBack(code, (int)GraphicBackend::OPENGL, strformat("ERROR:%i in %s line %i", code, funName, line - 1));
-					}
+					callBack.invoke(code, (int)GraphicBackend::OPENGL, strformat("ERROR:%i in %s line %i", code, funName, line - 1));
 				}
 			}
 
@@ -74,6 +71,7 @@ namespace cobek {
 					this->_surface = surface;
 				_libShader = std::vector<Shader>();
 				_handler = std::unordered_map<const char*, void*>();
+				logCallback = Delegate<void(int, int, std::string)>();
 			}
 			IGraphic_GL::~IGraphic_GL() {
 				_libShader.clear();
@@ -90,50 +88,10 @@ namespace cobek {
 
 			int IGraphic_GL::Init() {
 				_initialized = false;
-				PIXELFORMATDESCRIPTOR pDesc = {
-					sizeof(PIXELFORMATDESCRIPTOR),
-					1,
-					PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
-					PFD_TYPE_RGBA,	      // The kind of framebuffer. RGBA or palette.
-					32,					  // Colordepth of the framebuffer.
-					0, 0, 0, 0, 0, 0,
-					0,
-					0,
-					0,
-					0, 0, 0, 0,
-					24,                   // Number of bits for the depthbuffer
-					8,                    // Number of bits for the stencilbuffer
-					0,                    // Number of Aux buffers in the framebuffer. (NOT SUPPORTED,,,, WTF?)
-					0,				      // Not Supported
-					0,					  // Not Supported
-					0, 0, 0				  // Not Supported
-				};
-				Window::WinHandle* winSurface = (Window::WinHandle*)_surface->winData;
+				Window::WinPtr* winSurface = (Window::WinPtr*)_surface->winData;
+				this->_gctx = Window::WindowMgr::InitilizeGraphicWindow(winSurface, (GraphicBackend)get_GraphicType());
 
-				int pixFmt = ChoosePixelFormat((HDC)winSurface->hwndDC, &pDesc);
-				if (!pixFmt) {
-					if (logCallback)
-						logCallback(-1, this->get_GraphicType(), Util::StringFormat("Failed to Choose Pixel Format: %S", Util::LastSysErr()));
-					return false;
-				}
-				SetPixelFormat((HDC)winSurface->hwndDC, pixFmt, &pDesc);
-				this->_gctx = wglCreateContext((HDC)winSurface->hwndDC);
-				if (!this->_gctx) {
-					if (logCallback)
-						logCallback(-1, this->get_GraphicType(), Util::StringFormat("Failed to create Context: %S", Util::LastSysErr()));
-					return false;
-				}
-				wglMakeCurrent((HDC)winSurface->hwndDC, (HGLRC)this->_gctx);
-
-				if (gladLoadGL() != true) {
-					
-				}
-				if (glewInit() != GLEW_OK) {
-					if (logCallback)
-						logCallback(-1, this->get_GraphicType(), Util::StringFormat("Failed to initializing GLEW: %S", Util::LastSysErr()));
-					return false;
-				}
-
+				gladLoadGL();
 				//Initializing Some Handler
 				int fb;
 				glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fb);
@@ -142,6 +100,7 @@ namespace cobek {
 				_handler["fb"] = (void*)(uint)fb;
 				_handler["vao"] = (void*)vao;
 
+				//enble some set
 				glEnable(GL_BLEND);
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -202,7 +161,7 @@ namespace cobek {
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 				__getErr(this->logCallback, "glBindBuffer", __LINE__);
 				//Check mesh
-				if (!rebind) {
+				/*if (!rebind) {
 					for (auto m : _meshHandler) {
 						if (m.first == mesh) {
 							glBindBuffer(GL_ARRAY_BUFFER, (uint)m.second.vbo);
@@ -212,7 +171,7 @@ namespace cobek {
 							return true;
 						}
 					}
-				}
+				}*/
 				uint hPtr[2];
 				glGenBuffers(2, hPtr);
 				glBindBuffer(GL_ARRAY_BUFFER, hPtr[0]);
@@ -233,9 +192,6 @@ namespace cobek {
 				auto iPtr = mesh->get_indexPtr();
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, iLen, iPtr.ptr, mesh->isStatic ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
 				__getErr(this->logCallback, "glBufferSubData", __LINE__);
-
-				_MeshHandler handler = { (void*)hPtr[0], (void*)hPtr[1] };
-				_meshHandler[mesh] = handler;
 				return true;
 			}
 			int IGraphic_GL::UnbindMesh(Mesh* mesh, bool release) {
@@ -387,8 +343,8 @@ namespace cobek {
 				return false;
 			}
 
-			int IGraphic_GL::ClearColor(const Color& color) {
-				glClearColor(color.r, color.g, color.b, color.a);
+			int IGraphic_GL::ClearColor(const ColorF& color) {
+				glClearColor(color.col0, color.col1, color.col2, color.col3);
 				return false;
 			}
 			int IGraphic_GL::ClearDepth(const float& depth) {
@@ -405,7 +361,7 @@ namespace cobek {
 				return true;
 			}
 			int IGraphic_GL::EndRender() {
-				SwapBuffers((HDC)((Window::WinHandle*)_surface->winData)->hwndDC);
+				Window::WindowMgr::SwapBufferGraphicWindow(this->_gctx);
 				return true;
 			}
 		}

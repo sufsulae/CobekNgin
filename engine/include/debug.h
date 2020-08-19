@@ -8,7 +8,7 @@
 #include "include\file.h"
 #endif
 
-#ifndef COBE_UTILITY_INLINE_H
+#ifndef COBEK_UTILITY_INLINE_H
 #include "include\utility\inline.h"
 #endif
 

@@ -18,8 +18,6 @@ namespace fs = ::FileSystem;
 //}
 
 int main(int argc, char* argv[]) {
-	Debug::SetLogFile("testFile.txt");
-	Debug::Log("Yey Berhasil %s", "Nge print ini");
-	Debug::Log("Yey Berhasil Lagi %s", "Nge print ini dan itu");
+	
 }
 

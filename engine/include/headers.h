@@ -2,7 +2,7 @@
 #ifndef COBEK_HEADERS_H
 #define COBEK_HEADERS_H
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(_WIN64) || defined(__VC32__) && !defined(__CYGWIN__) && !defined(__SCITECH_SNAP__)
 #ifndef WIN32_LEAD_AND_MEAN
 #define WIN32_LEAN_AND_MEAN 1
 #endif
@@ -13,7 +13,7 @@
 
 #include <windows.h>
 #define COBEK_PLATFORM_WIN 1
-#elif defined(__ANDROID__)
+#elif defined(__ANDROID__) || defined(ANDROID)
 #include <jni.h>
 #include <native_app_glue\android_native_app_glue.h>
 #if defined (__GNUC__) && __GNUC__ >= 4 || defined (__SUNPRO_C) && __SUNPRO_C == 0x590
@@ -24,6 +24,7 @@
 #elif defined(__linux__) || defined (__unix__) || defined(__APPLE__)
 #include <X11.h>
 #define COBEK_API(type) type
+#define COBEK_PLATFORM_LINUX 1
 #if defined(__APPLE__)
 #define COBEK_PLATFORM_APPLE 1
 #else
@@ -56,11 +57,12 @@
 #pragma comment (lib, "OpenGL32.lib")
 #endif
 #ifdef COBEK_INCLUDE_GRAPHIC_GLES
+#define COBEK_GLES 4
 #define GL_GLEXT_PROTOTYPES 1
+#include "glad\glad_egl.h"
 #include "glad\glad_gles.h"
 #pragma comment (lib, "libEGL.lib")
 #pragma comment (lib, "libGLESv2.lib")
-#define COBEK_GLES 4
 #endif
 #endif
 

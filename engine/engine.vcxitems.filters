@@ -30,6 +30,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\plugin\mono\mono_impl.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\debug.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\file.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\window.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\utility\sys.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_gl.c">
@@ -51,6 +53,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\file.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\graphic_gl.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\debug.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_egl.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\window.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\3rdParty\src\glad\glad_wgl.c" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

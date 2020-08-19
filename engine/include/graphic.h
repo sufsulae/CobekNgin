@@ -52,15 +52,7 @@
 namespace cobek {
 	namespace Graphic {
 		using namespace cobek::Memory;
-		namespace __internal__ {
-			struct _MeshHandler {
-				void* vbo;
-				void* ibo;
-			};
-		}
-
 		class IGraphic;
-		typedef FUNC(gLogCallback, void, int, int, std::string);
 
 		//----GRAPHIC PARAMETER---
 		enum class GraphicBackend {
@@ -245,7 +237,7 @@ namespace cobek {
 		//----GRAPHIC RESOURCE---
 		class Surface : public BaseObject<id_t, Surface> {
 		public:
-			GraphicSurfaceData param;
+			GraphicSurfaceData param = {};
 			void* winData;
 			void* gInterface;
 			RectI rect;
@@ -259,13 +251,13 @@ namespace cobek {
 		public:
 			const char* name = nullptr;
 			void* handle = nullptr;
-			std::unordered_map<std::string, GraphicShaderInputInfo> input;
+			std::unordered_map<std::string, GraphicShaderInputInfo> input = {};
 		};
 
 		class Material : public BaseObject<id_t, Material> {
 		public:
-			Shader* shader;
-			std::unordered_map<std::string, void*> shaderInputHandler;
+			Shader* shader = nullptr;
+			std::unordered_map<std::string, void*> shaderInputHandler = {};
 
 			Material() {
 				shader = nullptr;
@@ -279,34 +271,28 @@ namespace cobek {
 
 		class Mesh : public BaseObject<id_t, Mesh> {
 		private:
-			MappedBuffer<float> m_vertex;
-			std::vector<uint> m_index;
+			MappedBuffer<float> m_vertex = {};
+			std::vector<uint> m_index = {};
 		public:
-			Material* material;
+			Material* material = nullptr;
 			bool isStatic = false;
 
-			Mesh() : BaseObject() {
-				m_index = std::vector<uint>();
-
-				material = nullptr;
-				isStatic = false;
-			}
 			~Mesh() {
 				m_index.clear();
 			}
 
-			int get_index(const uint* buffer, size_t bufferSize);
-			int set_index(ArrayPtr<uint>* indexArray);
-			ArrayPtr<uint> get_indexPtr();
+			int get_indexBuffer(const uint* buffer, size_t bufferSize);
+			int set_indexbuffer(ArrayPtr<uint>* indexArray);
+			ArrayPtr<uint> get_indexBufferPtr();
 
-			int get_vertex(const char* name, const float* buffer, size_t bufferSize);
-			int add_vertex(const char* name, ArrayPtr<float>* vertexData);
-			int remove_vertex(const char* name);
+			int get_vertexBuffer(const char* name, const float* buffer, size_t bufferSize);
+			int add_vertexBuffer(const char* name, ArrayPtr<float>* vertexData);
+			int remove_vertexBuffer(const char* name);
 
-			size_t get_vertexSize();
-			size_t get_indexSize();
-			ArrayPtr<float> get_vertexPtr(const char* name);
-			std::vector<ArrayPtr<float>> get_vertexPtrs();
+			size_t get_vertexBufferSize();
+			size_t get_indexBufferSize();
+			ArrayPtr<float> get_vertexBufferPtr(const char* name);
+			std::vector<ArrayPtr<float>> get_vertexBufferPtrs();
 		};
 
 		class Texture : public BaseObject<id_t, Shader> {
@@ -323,12 +309,12 @@ namespace cobek {
 			Surface* _surface;
 			std::vector<Shader> _libShader;
 			std::unordered_map<const char*, void*> _handler;
-			std::unordered_map<Mesh*, __internal__::_MeshHandler> _meshHandler;
+			std::vector<Mesh*> _meshHandler;
 
 			virtual bool checkShaderProgram(void* shaderHandle, uint kind) { return false; };
 			virtual bool checkShaderCompilation(void* shaderHandle, uint kind) { return false; };
 		public:
-			gLogCallback logCallback;
+			Delegate<void(int,int,std::string)> logCallback;
 
 			IGraphic(Surface* surface) {}
 			virtual ~IGraphic() {}
